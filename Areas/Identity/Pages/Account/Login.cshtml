@@ -1,0 +1,64 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Entrar";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<section class="vh-70">    
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://www.getillustrations.com/packs/zanzi-free-illustrations-for-websites/scenes/_1x/accounts%20_%20user,%20users,%20profile,%20account,%20man,%20people,%20website,%20browser,%20webpage_sm.png"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <!-- Email input -->
+                    <div class="form-floating mb-4">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true"
+                               class="form-control form-control-md"
+                               placeholder="Digite um e-mail válido" />
+                        <label class="form-label">Insira seu e-mail</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <!-- Password input -->
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true"
+                               class="form-control form-control-md"
+                               placeholder="Digite sua senha" />
+                        <label  class="form-label">Insira sua senha</label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Checkbox -->
+                        <div class="form-check mb-0">
+                            <label asp-for="Input.RememberMe" class="form-label">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                           Lembre-me
+                            </label>
+                        </div>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Esqueceu sua senha?</a>
+                    </div>
+                    <div class="text-center text-md-center mt-4 pt-2">
+                        <button type="button" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                            Entrar
+                        </button>
+                        <p class="small fw-normal mt-2 pt-1 mb-0">
+                            Não possui um acesso? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
+                                                     class="link-primary">Registre-se</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

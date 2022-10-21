@@ -1,0 +1,47 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Criar nova conta";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<section class="vh-70">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true"
+                               class="form-control form-control-md" placeholder="Digite um e-mail válido" />
+                        <label>Insira um e-mail válido</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true"
+                               class="form-control form-control-md" placeholder="Digite um e-mail válido" />
+                        <label>Insira uma senha</label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true"
+                               class="form-control form-control-md" placeholder="Digite um e-mail válido" />
+                        <label>Repita a sua senha</label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mb-4">Register</button>
+                </form>
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <img src="https://www.getillustrations.com/packs/zanzi-free-illustrations-for-websites/scenes/_1x/storage%20_%20work%20from%20home,%20upload,%20archive,%20backup,%20data,%20database,%20online,%20cloud,%20transfer_sm.png"
+                     class="img-fluid" alt="Sample image">
+            </>
+        </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
