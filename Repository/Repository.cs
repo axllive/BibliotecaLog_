@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BibliotecaLog.Repository
 {
-    public class Repository<T> : IRepository<T> where T : Root
+     //ALTERAÇÃO TIPO DE CLASSE PARA ABSTRACT
+    public abstract class Repository<T> : IRepository<T> where T : Root
     {
         protected readonly DataContext _context;
         //construtor do repository contendo o contexto principal
