@@ -52,3 +52,10 @@ body {
 .h-custom {
     height: calc(100% - 73px);
 }
+.nav-item a{
+    color: white;
+}
+.nav-item a:hover {
+    background-color: #d3d3b4;
+    color: black;
+}

@@ -1,83 +1,93 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BibliotecaLog.Data;
+using BibliotecaLog.Models;
+using BibliotecaLog.Repository;
+using BibliotecaLog.Repository.Interface;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Reflection.Emit;
 
 namespace BibliotecaLog.Controllers
 {
     public class BookLoanController : Controller
     {
-        // GET: BookLoanController
-        public ActionResult Index()
+        private readonly IAuthorRepository _authorRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly IBookRepository _bookRepository;
+        private readonly ILoanRepository _loanRepository;
+        private readonly DataContext _dbContext;
+        public BookLoanController(IAuthorRepository authorRepository,
+            IStudentRepository studentRepository, IBookRepository bookRepository
+            ,ILoanRepository loanRepository, DataContext db) 
         {
-            return View();
+            _authorRepository = authorRepository;
+            _studentRepository = studentRepository;
+            _bookRepository = bookRepository;
+            _loanRepository = loanRepository;
+            _dbContext = db; 
         }
-
-        // GET: BookLoanController/Details/5
-        public ActionResult Details(int id)
+        // GET: BookLoanController
+        //A index aqui lista os empréstimos
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var loanlist = _loanRepository.ConsultarTodos().Result.ToList();
+            return View( loanlist );
         }
 
         // GET: BookLoanController/Create
-        public ActionResult Create()
+        //a "create" lista os livros a emprestar
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var books = await _dbContext.Books
+                .Include(c => c.BookAuthor)
+                .AsNoTracking()
+                .ToListAsync();
+            return View(books);
         }
-
-        // POST: BookLoanController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: BookLoanController/Edit/5
-        public ActionResult Edit(int id)
+        //a "edit" que vai efetivamente realizar o empréstimo do livro
+        
+        public async Task<IActionResult> Edit(int id, string StudentEmail)
         {
+            var book = await _bookRepository.ConsultarTodos(b => b.Id == id);
+            ViewData["AuthorID"] = new SelectList(book, "Id",
+                "Title");
             return View();
         }
 
         // POST: BookLoanController/Edit/5
+        //pegando o livro emprestado
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public virtual async Task<IActionResult> Edit(BookLoan loan, int BookId, string StudentEmail)
         {
-            try
+            var refBook = await _bookRepository.ConsultarUm(BookId);
+            var refStudent = _studentRepository
+                .ConsultarTodos(
+                s => s.Email == StudentEmail)
+                .Result.FirstOrDefault();
+            if (loan == null ) return RedirectToRoute(new { controller = "Home", action = "Index" });
+            if (loan != null)
             {
-                return RedirectToAction(nameof(Index));
+                loan.Student = refStudent;
+                loan.StudentEmail = loan.StudentEmail;
+                refBook.IsBorrowed = true;
+                loan.Book = refBook;
+                loan.BookId = refBook.Id;
+                await _loanRepository.Criar(loan);
+                return RedirectToRoute(new { controller = "BookLoan", action = "Index" });
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToRoute(new { controller = "BookLoan", action = "Index"});
             }
-        }
-
-        // GET: BookLoanController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: BookLoanController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var book = await _bookRepository.ConsultarTodos(b => b.Id == loan.BookId);
+            ViewData["AuthorID"] = new SelectList(book, "Id",
+                "Title");
+            return RedirectToRoute(new { controller = "BookLoan", action = "Index" });
         }
     }
 }

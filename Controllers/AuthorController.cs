@@ -14,35 +14,41 @@ namespace BibliotecaLog.Controllers
         private readonly IAuthorRepository _authorRepository;
         private readonly IBookRepository _bookRepository;
 
-        public AuthorController(DataContext dataContext, IAuthorRepository authorRep)
+        public AuthorController(IBookRepository bookRep, IAuthorRepository authorRep)
         {
             _authorRepository = authorRep;
+            _bookRepository = bookRep;
         }
-        // GET: AuthorController
+        // GET: AuthorController Index - lista todos os autores
         public async Task<IActionResult> Index()
         {
-            return View(await _authorRepository.Authors.ToListAsync() );
+            return View(await _authorRepository.ConsultarTodos() );
         }
 
         // GET: AuthorController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
+            //consulta autor no contexto
+            var author = await _authorRepository.ConsultarUm(id);
+            if (author == null)//valida se existe
             {
                 return NotFound();
             }
-            var author = await _dataContext.Authors
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
-            {
-                return NotFound();
+            //recupera repositório de livros com a fk do autor
+            var bookList = await _bookRepository.
+                ConsultarTodos(x => x.AuthorId == id);
+            foreach (var item in bookList)
+            {   //vincula ao autor se já não estiver vinculado
+                if (!author.AuthorBooks.Contains(item))
+                {
+                    author.AuthorBooks.Add(item);
+                    }
             }
-            var BookList = await _bookRepository.ConsultarTodos();
-            return View();
+            return View(author);
         }
 
         // GET: AuthorController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -50,52 +56,76 @@ namespace BibliotecaLog.Controllers
         // POST: AuthorController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(AuthorViewModel author)
         {
-            try
+            if (ModelState.IsValid)
             {
+                await _authorRepository.Criar(author);
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(author);
         }
 
         // GET: AuthorController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var autor = await _authorRepository.ConsultarUm(id);
+            if (autor == null)
+            {
+                return NotFound();
+            }
+            return View(autor);
         }
 
         // POST: AuthorController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(AuthorViewModel EditAuthor)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: AuthorController/Delete/5
-        public ActionResult Delete(int id)
-        {
+            if (ModelState.IsValid)
+                try
+                {
+                    await _authorRepository.Atualizar(EditAuthor);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             return View();
         }
 
-        // POST: AuthorController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        // GET: AuthorController/Delete/5
+        public async Task<IActionResult> Delete(int id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var autor = await _authorRepository.ConsultarUm(id);
+            if (autor == null)
+            {
+                return NotFound();
+            }
+            return View(autor);
+        }
+
+        // POST: AuthorController/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id) { 
             try
             {
+                var delAuthor = await _authorRepository
+                    .ConsultarUm(id);
+                if (delAuthor == null) return NotFound();
+                await _authorRepository.Excluir(delAuthor);
                 return RedirectToAction(nameof(Index));
             }
             catch

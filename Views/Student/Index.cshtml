@@ -1,0 +1,54 @@
+﻿@model IEnumerable<BibliotecaLog.Models.StudentViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Aluno</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nome do Aluno
+            </th>
+            <th>
+                Matrícula
+            </th>
+            <th>
+                E-mail
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnrollmentNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <a asp-action="Edit" asp-route-id="@item.Id"
+                    type="button" class="btn btn-outline-secondary">
+                        <i class="far fa-edit"></i>
+                    </a>
+                    <a asp-action="Details" asp-route-id="@item.Id"
+                    type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@item.Id"
+                    type="button" class="btn btn-outline-secondary">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

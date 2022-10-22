@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // Add services to the container.
-//código autogerado
+//cï¿½digo autogerado
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 //Adicionando o contexto do identity
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -15,9 +15,40 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //Adicionando o contexto da model
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(connectionString));
-//código autogerado
+//cï¿½digo autogerado
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-//identity carregada com serviços padrão sem detalhamento
+//identity options
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.RequireUniqueEmail = false;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedAccount = false;
+});
+//identity cookie options
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
+//identity carregada com serviï¿½os padrï¿½o sem detalhamento
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 // Add Dependency
@@ -26,7 +57,7 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ILoanRepository, BookLoanRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
-//execução da biuld
+//execuï¿½ï¿½o da biuld
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,0 +1,81 @@
+﻿@model BibliotecaLog.Models.AuthorViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalhes</h1>
+
+<div>
+    <div>
+        <h4>Autor: <l style="font-size: 32px;">@Html.DisplayFor(model => model.Name)</l></h4>
+        <hr />
+    </div>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+<h1>Livros deste Autor</h1>
+<table id="table-livros" class=" table table-dark table-striped table-hover">
+    <thead>
+        <tr>
+            <th>
+                Nome do Livro
+            </th>
+            <th>
+                Está emprestado?
+            </th>
+            <th>
+                Emprestado de:
+            </th>
+            <th>
+                Emprestado até:
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.AuthorBooks != null)
+            foreach (var item in Model.AuthorBooks )
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @if (item.IsBorrowed)
+                        {
+                            <div class="text-center">
+                                <i class="fas fa-thumbs-up"></i>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center">
+                                <i class="fas fa-thumbs-down"></i>
+                            </div>
+                        }
+                    </td>
+                    @if (item.IsBorrowed)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BookLoan.BorrowStart)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BookLoan.BorrowEnd)
+                        </td>
+                    }
+                    <td></td>
+                </tr>
+            }
+    </tbody>
+</table>

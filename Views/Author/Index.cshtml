@@ -1,5 +1,70 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<BibliotecaLog.Models.AuthorViewModel>
+
 @{
+    ViewData["Title"] = "Index";
+}
+@if (SignInManager.IsSignedIn(User)) {
+<h1>Início</h1>
+    <hr />
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a asp-action="Edit" asp-route-id="@item.Id"
+                       type="button" class="btn btn-outline-secondary">
+                            <i class="far fa-edit"></i>
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.Id"
+                       type="button" class="btn btn-outline-secondary">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id"
+                       type="button" class="btn btn-outline-secondary">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+else
+{
+    <h1>Oops... Algo deu errado</h1>
+    <hr />
+    <section class="vh-70">
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="https://www.getillustrations.com/packs/zanzi-free-illustrations-for-websites/scenes/_1x/maintenance,%20error%20_%20website,%20webpage,%20browser,%20fix,%20repair,%20alert,%20warning,%20man,%20people_sm.png"
+                     class="img-fluid" alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <h1>Vamos tentar novamente?<h2><a asp-area="" asp-controller="Home" asp-action="Index"> Voltar para o início.</a></h2></h1>
+                </div>
+            </div>
+        </div>
+    </section>
 }

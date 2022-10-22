@@ -1,0 +1,101 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<BibliotecaLog.Models.BookViewModel>
+
+@{
+    ViewData["Title"] = "Livros";
+}
+
+<h1>Pegar livro emprestado</h1>
+<hr />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                Nome do autor
+            </th>
+            <th>
+                Título
+            </th>
+            <th>
+                Descrição
+            </th>
+            <th>
+                Está emprestado?
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BookAuthor.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @if (item.IsBorrowed)
+                        {
+                            <div class="text-center">
+                                <i class="fas fa-thumbs-up"></i>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center">
+                                <i class="fas fa-thumbs-down"></i>
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsBorrowed)
+                        {
+                        <td>
+                                @Html.DisplayFor(modelItem => item.BookLoan.BorrowStart)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.BookLoan.BorrowEnd)
+                        </td>
+                        }
+                        else
+                        {
+                        <td></td>
+                        <td></td>
+                        }
+                    </td>
+                        @if (!item.IsBorrowed)
+                        {
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                <a asp-action="Edit" asp-route-id="@item.Id" asp-route-StudentEmail="@User.Identity.Name"
+                           type="button" class="btn btn-outline-secondary">
+                                    <i class="far fa-bookmark"></i>
+                                </a>
+                                <a asp-controller="Book" asp-action="Details" asp-route-id="@item.Id"
+                           type="button" class="btn btn-outline-secondary">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                            </div>
+                        </td>
+                        }
+                        else
+                        {
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        }
+                    
+                    <td></td>
+                </tr>
+            }
+    </tbody>
+</table>

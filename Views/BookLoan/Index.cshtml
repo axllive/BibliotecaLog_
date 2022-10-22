@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<BibliotecaLog.Models.BookLoan>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Lista de empréstimos</h1>
+
+<p>
+    <a asp-action="Create">Pegar livro emprestado</a>
+</p>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Início do empréstimo
+            </th>
+            <th>
+                Fim do empréstimo
+            </th>
+            <th>
+                Livro emprestado
+            </th>
+            <th>
+                Nome do aluno
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BorrowStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BorrowEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.Email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibliotecaLog.Models
 {
     public class BookLoan : Root
     {
         public int BookId { get; set; }
-        public int StudentId { get; set; }
+        [ForeignKey("StudentViewModel")]
+        public string StudentEmail { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
@@ -16,7 +18,7 @@ namespace BibliotecaLog.Models
         public DateTime? BorrowEnd { get; set; }
 
         //Relacionamentos do Entity FrameWork
-        public BookViewModel Book { get; set; }
-        public StudentViewModel Student { get; set; }
+        public BookViewModel? Book { get; set; }
+        public StudentViewModel? Student { get; set; }
     }
 }

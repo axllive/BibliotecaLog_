@@ -22,7 +22,7 @@ namespace BibliotecaLog.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("BibliotecaLogin.Models.AuthorViewModel", b =>
+            modelBuilder.Entity("BibliotecaLog.Models.AuthorViewModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace BibliotecaLog.Migrations
                     b.ToTable("Authors");
                 });
 
-            modelBuilder.Entity("BibliotecaLogin.Models.BookLoan", b =>
+            modelBuilder.Entity("BibliotecaLog.Models.BookLoan", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,11 @@ namespace BibliotecaLog.Migrations
                     b.Property<DateTime?>("BorrowStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StudentId")
+                    b.Property<string>("StudentEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -69,7 +73,7 @@ namespace BibliotecaLog.Migrations
                     b.ToTable("Loans");
                 });
 
-            modelBuilder.Entity("BibliotecaLogin.Models.BookViewModel", b =>
+            modelBuilder.Entity("BibliotecaLog.Models.BookViewModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,17 +88,15 @@ namespace BibliotecaLog.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsBorrowed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LoanId")
+                    b.Property<int?>("LoanId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -104,7 +106,7 @@ namespace BibliotecaLog.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("BibliotecaLogin.Models.StudentViewModel", b =>
+            modelBuilder.Entity("BibliotecaLog.Models.StudentViewModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,28 +130,26 @@ namespace BibliotecaLog.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("BibliotecaLogin.Models.BookLoan", b =>
+            modelBuilder.Entity("BibliotecaLog.Models.BookLoan", b =>
                 {
-                    b.HasOne("BibliotecaLogin.Models.BookViewModel", "Book")
+                    b.HasOne("BibliotecaLog.Models.BookViewModel", "Book")
                         .WithOne("BookLoan")
-                        .HasForeignKey("BibliotecaLogin.Models.BookLoan", "BookId")
+                        .HasForeignKey("BibliotecaLog.Models.BookLoan", "BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BibliotecaLogin.Models.StudentViewModel", "Student")
+                    b.HasOne("BibliotecaLog.Models.StudentViewModel", "Student")
                         .WithMany("Loans")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentId");
 
                     b.Navigation("Book");
 
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("BibliotecaLogin.Models.BookViewModel", b =>
+            modelBuilder.Entity("BibliotecaLog.Models.BookViewModel", b =>
                 {
-                    b.HasOne("BibliotecaLogin.Models.AuthorViewModel", "BookAuthor")
+                    b.HasOne("BibliotecaLog.Models.AuthorViewModel", "BookAuthor")
                         .WithMany("AuthorBooks")
                         .HasForeignKey("BookAuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -158,18 +158,17 @@ namespace BibliotecaLog.Migrations
                     b.Navigation("BookAuthor");
                 });
 
-            modelBuilder.Entity("BibliotecaLogin.Models.AuthorViewModel", b =>
+            modelBuilder.Entity("BibliotecaLog.Models.AuthorViewModel", b =>
                 {
                     b.Navigation("AuthorBooks");
                 });
 
-            modelBuilder.Entity("BibliotecaLogin.Models.BookViewModel", b =>
+            modelBuilder.Entity("BibliotecaLog.Models.BookViewModel", b =>
                 {
-                    b.Navigation("BookLoan")
-                        .IsRequired();
+                    b.Navigation("BookLoan");
                 });
 
-            modelBuilder.Entity("BibliotecaLogin.Models.StudentViewModel", b =>
+            modelBuilder.Entity("BibliotecaLog.Models.StudentViewModel", b =>
                 {
                     b.Navigation("Loans");
                 });
