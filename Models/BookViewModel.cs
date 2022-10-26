@@ -13,6 +13,6 @@ namespace BibliotecaLog.Models
         public bool IsBorrowed { get; set; }
         //Relacionamentos do Entity FrameWork
         public AuthorViewModel BookAuthor { get; set; }
-        public BookLoan? BookLoan { get; set; }
+        public List<BookLoan>? BookLoan { get; set; }
     }
 }

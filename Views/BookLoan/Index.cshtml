@@ -6,14 +6,14 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+@if (SignInManager.IsSignedIn(User)) {
 <h1>Lista de empréstimos</h1>
 
 <p>
-    <a asp-action="Create">Pegar livro emprestado</a>
+    <a asp-action="IndexLivros">Pegar livro emprestado</a>
 </p>
 <hr />
-<table class="table">
+<table id="table-livros" class="table">
     <thead>
         <tr>
             <th>
@@ -29,6 +29,7 @@
                 Nome do aluno
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -41,17 +42,49 @@
                 @Html.DisplayFor(modelItem => item.BorrowEnd)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Book.Id)
+                @Html.DisplayFor(modelItem => item.Book.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Student.Email)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if (item.IsActive)
+                    {
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <a asp-action="Devolver" asp-route-id="@item.Id" asp-route-StudentEmail="@User.Identity?.Name"
+                            type="button" class="btn btn-outline-secondary">
+                                <i class="fas fa-share-square"></i>
+                            </a>
+                        </div>
+                    }
+             </td>
+             <td>
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <a asp-controller="Book" asp-action="Details" asp-route-id="@item.Book.Id"
+                    type="button" class="btn btn-outline-secondary">
+                            <i class="fas fa-info-circle"></i>
+                    </a>
+                </div>
             </td>
         </tr>
 }
     </tbody>
 </table>
+}
+else{
+    <h1>Oops... Algo deu errado</h1>
+    <hr />
+    <section class="vh-70">
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="https://www.getillustrations.com/packs/zanzi-free-illustrations-for-websites/scenes/_1x/maintenance,%20error%20_%20website,%20webpage,%20browser,%20fix,%20repair,%20alert,%20warning,%20man,%20people_sm.png"
+                    class="img-fluid" alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <h1>Vamos tentar novamente?<h2><a asp-area="" asp-controller="Home" asp-action="Index"> Voltar para o início.</a></h2></h1>
+                </div>
+            </div>
+        </div>
+    </section>
+}

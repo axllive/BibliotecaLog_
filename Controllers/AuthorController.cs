@@ -13,11 +13,13 @@ namespace BibliotecaLog.Controllers
         //config
         private readonly IAuthorRepository _authorRepository;
         private readonly IBookRepository _bookRepository;
+        private readonly DataContext _dbContext;
 
-        public AuthorController(IBookRepository bookRep, IAuthorRepository authorRep)
+        public AuthorController(IBookRepository bookRep, IAuthorRepository authorRep, DataContext dbContext)
         {
             _authorRepository = authorRep;
             _bookRepository = bookRep;
+            _dbContext = dbContext;
         }
         // GET: AuthorController Index - lista todos os autores
         public async Task<IActionResult> Index()
@@ -35,15 +37,17 @@ namespace BibliotecaLog.Controllers
                 return NotFound();
             }
             //recupera repositório de livros com a fk do autor
-            var bookList = await _bookRepository.
-                ConsultarTodos(x => x.AuthorId == id);
-            foreach (var item in bookList)
-            {   //vincula ao autor se já não estiver vinculado
-                if (!author.AuthorBooks.Contains(item))
+            foreach (BookViewModel n in _dbContext.Books)
+            {
+                if (n.AuthorId == author.Id)
                 {
-                    author.AuthorBooks.Add(item);
+                    if (!author.AuthorBooks.Contains(n))
+                    {
+                        author.AuthorBooks.Add(n);
                     }
+                }
             }
+
             return View(author);
         }
 
@@ -103,17 +107,25 @@ namespace BibliotecaLog.Controllers
         // GET: AuthorController/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
+            //consulta autor no contexto
+            var author = await _authorRepository.ConsultarUm(id);
             if (id == null)
             {
                 return NotFound();
             }
-
-            var autor = await _authorRepository.ConsultarUm(id);
-            if (autor == null)
+            //recupera repositório de livros com a fk do autor
+            foreach (BookViewModel n in _dbContext.Books)
             {
-                return NotFound();
+                if (n.AuthorId == author.Id)
+                {
+                    if (!author.AuthorBooks.Contains(n))
+                    {
+                        author.AuthorBooks.Add(n);
+                    }
+                }
             }
-            return View(autor);
+
+            return View(author);
         }
 
         // POST: AuthorController/Delete/5

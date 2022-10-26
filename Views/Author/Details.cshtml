@@ -31,14 +31,8 @@
             <th>
                 Nome do Livro
             </th>
-            <th>
+            <th class ="text-center">
                 Está emprestado?
-            </th>
-            <th>
-                Emprestado de:
-            </th>
-            <th>
-                Emprestado até:
             </th>
             <th></th>
         </tr>
@@ -65,15 +59,6 @@
                             </div>
                         }
                     </td>
-                    @if (item.IsBorrowed)
-                    {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BookLoan.BorrowStart)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BookLoan.BorrowEnd)
-                        </td>
-                    }
                     <td></td>
                 </tr>
             }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaLog.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221022214336_initialidentity")]
-    partial class initialidentity
+    [Migration("20221024000649_InitialMigrationIdentity")]
+    partial class InitialMigrationIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

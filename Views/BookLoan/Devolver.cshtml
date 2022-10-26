@@ -1,39 +1,39 @@
 ﻿@model BibliotecaLog.Models.BookLoan
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Devolver";
 }
 
-<h1>Create</h1>
+<h1>Devolver</h1>
 
 <h4>BookLoan</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Devolver">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="BookId" class="control-label"></label>
-                <select asp-for="BookId" class ="form-control" asp-items="ViewBag.BookId"></select>
+                <label asp-for="BookId" class="control-label">Livro</label>
+                <select asp-for="BookId" class="form-control" asp-items="ViewBag.BookId"></select>
                 <span asp-validation-for="BookId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StudentId" class="control-label"></label>
+                <label asp-for="StudentId" class="control-label">Aluno</label>
                 <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentID"></select>
                 <span asp-validation-for="StudentId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BorrowStart" class="control-label"></label>
-                <input asp-for="BorrowStart" class="form-control" />
+                <label asp-for="BorrowStart" class="control-label">Data de início</label>
+                <label asp-for="@Model.BorrowStart" class="form-control" disabled>@Model.BorrowStart</label>
                 <span asp-validation-for="BorrowStart" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BorrowEnd" class="control-label"></label>
-                <input asp-for="BorrowEnd" class="form-control" />
+                <label asp-for="BorrowEnd" class="control-label"  >Data de encerramento</label>
+                <label asp-for="@Model.BorrowEnd" class="form-control" disabled>@Model.BorrowEnd</label>
                 <span asp-validation-for="BorrowEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Devolver livro" class="btn btn-outline-warning mt-2 pt-1" />
             </div>
         </form>
     </div>

@@ -67,12 +67,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0xvYW5cQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/axll/Documents/BibliotecaLog-master/Views/BookLoan/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0xvYW5cRWRpdC5jc2h0bWw=
+[C:/Users/axll/Documents/BibliotecaLog-master/Views/BookLoan/Devolver.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0xvYW5cRGV2b2x2ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/axll/Documents/BibliotecaLog-master/Views/BookLoan/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0xvYW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/axll/Documents/BibliotecaLog-master/Views/BookLoan/IndexLivros.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0xvYW5cSW5kZXhMaXZyb3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/axll/Documents/BibliotecaLog-master/Views/Book/Create.cshtml]

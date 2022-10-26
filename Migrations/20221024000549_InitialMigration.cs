@@ -68,10 +68,9 @@ namespace BibliotecaLog.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BookId = table.Column<int>(type: "int", nullable: false),
-                    StudentEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
                     BorrowStart = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    BorrowEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    StudentId = table.Column<int>(type: "int", nullable: true)
+                    BorrowEnd = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -86,7 +85,8 @@ namespace BibliotecaLog.Migrations
                         name: "FK_Loans_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

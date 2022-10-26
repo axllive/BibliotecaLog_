@@ -52,11 +52,9 @@ namespace BibliotecaLog.Repository
         {
             _context?.Dispose();
         }
-        public async Task<int> SaveChanges()
+        public virtual async Task<int> SaveChanges()
         {
             return await _context.SaveChangesAsync();
         }
-
-        
     }
 }

@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Editando o aluno:</h1>
 
-<h4>StudentViewModel</h4>
+<h4>@Model.StudentName</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,12 +19,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="EnrollmentNumber" class="control-label">Matrícula</label>
-                <input asp-for="EnrollmentNumber" class="form-control" />
+                <input asp-for="EnrollmentNumber" class="form-control" disabled />
                 <span asp-validation-for="EnrollmentNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label">E-mail</label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" disabled />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />

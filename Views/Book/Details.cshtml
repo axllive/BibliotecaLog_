@@ -1,48 +1,45 @@
 ﻿@model BibliotecaLog.Models.BookViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes";
 }
 
-<h1>Details</h1>
+<h1>Detalhes do livro:</h1>
 
 <div>
-    <h4>BookViewModel</h4>
+    <h4>@Model.Title</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AuthorId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AuthorId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LoanId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LoanId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+            Título do livro:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Sinopse:
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsBorrowed)
+            Está emprestado?
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsBorrowed)
-        </dd>
+            @if (Model.IsBorrowed)
+            {
+            <dd class="col-sm-2">
+                    <i class="fas fa-thumbs-up"></i>
+            </dd>
+            }
+            else
+            {
+            <dd class="col-sm-2">
+                    <i class="fas fa-thumbs-down"></i>
+            </dd>
+            }
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar livro</a> |
+    <a asp-action="Index">Voltar para lista dos livros</a>
 </div>

@@ -4,33 +4,33 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Dados de usuário</h1>
 
-<h4>StudentViewModel</h4>
+<h4>Insira seus dados de Aluno:</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="StudentName" class="control-label"></label>
+                <label asp-for="StudentName" class="control-label">Seu nome:</label>
                 <input asp-for="StudentName" class="form-control" />
                 <span asp-validation-for="StudentName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <label asp-for="@Model.Email" class="control-label">E-mail cadastrado</label>
+                <input asp-for="Email" class="form-control" readonly />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-outline-secondary mt-2 pt-1" />
+                <input type="submit" value="Cirar" class="btn btn-outline-secondary mt-2 pt-1" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="mt-2 pt-1">Back to List</a>
 </div>
 
 @section Scripts {

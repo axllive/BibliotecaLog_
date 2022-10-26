@@ -1,20 +1,23 @@
-﻿@model IEnumerable<BibliotecaLog.Models.BookViewModel>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<BibliotecaLog.Models.BookViewModel>
 
 @{
     ViewData["Title"] = "Livros";
 }
-
+@if (SignInManager.IsSignedIn(User)) { 
 <h1>Livros</h1>
 
 <p>
     <a asp-action="Create">Cadastrar livro</a>
 </p>
 <hr />
-<table class="table table-hover">
-    <thead>
+<table id="table-livros" class="table table-hover">
+     <thead>
         <tr>
             <th>
-                Nome do autor
+                Autor
             </th>
             <th>
                 Título
@@ -26,11 +29,12 @@
                 Está emprestado?
             </th>
             <th>
-                Emprestado de:
+                De:
             </th>
             <th>
-                Emprestado até:
+                Até:
             </th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>
@@ -61,41 +65,65 @@ foreach (var item in Model) {
                             <i class="fas fa-thumbs-down"></i>
                         </div>
                     }
-            </td>
-            <td>
-                @if (item.IsBorrowed)
+            </td>@if (item.IsBorrowed)
                 {
                     <td>
-                        @Html.DisplayFor(modelItem => item.BookLoan.BorrowStart)
+                                @Html.DisplayFor(modelItem => item.BookLoan.Last().BorrowStart)
                     </td>
                     <td>
-                         @Html.DisplayFor(modelItem => item.BookLoan.BorrowEnd)
+                                @Html.DisplayFor(modelItem => item.BookLoan.Last().BorrowEnd)
                     </td>
                 }
                 else
                 {
                     <td></td>
                     <td></td>
+
                 }
-            </td>
             <td>
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a asp-action="Edit" asp-route-id="@item.Id"
                 type="button" class="btn btn-outline-secondary">
                         <i class="far fa-edit"></i>
                     </a>
+                    </div>
+            </td>
+            <td>
+                            <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a asp-action="Details" asp-route-id="@item.Id"
                 type="button" class="btn btn-outline-secondary">
                         <i class="fas fa-info-circle"></i>
                     </a>
+                    </div>
+            </td>
+            <td>
+                            <div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a asp-action="Delete" asp-route-id="@item.Id"
                 type="button" class="btn btn-outline-secondary">
                         <i class="fas fa-trash-alt"></i>
                     </a>
                 </div>
             </td>
-            <td></td>
         </tr>
 }
     </tbody>
 </table>
+}
+else
+{
+    <h1>Oops... Algo deu errado</h1>
+    <hr />
+    <section class="vh-70">
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="https://www.getillustrations.com/packs/zanzi-free-illustrations-for-websites/scenes/_1x/maintenance,%20error%20_%20website,%20webpage,%20browser,%20fix,%20repair,%20alert,%20warning,%20man,%20people_sm.png"
+                     class="img-fluid" alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <h1>Vamos tentar novamente?<h2><a asp-area="" asp-controller="Home" asp-action="Index"> Voltar para o início.</a></h2></h1>
+                </div>
+            </div>
+        </div>
+    </section>
+}

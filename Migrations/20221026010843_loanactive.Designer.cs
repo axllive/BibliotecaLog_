@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaLog.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221022214235_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20221026010843_loanactive")]
+    partial class loanactive
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,17 +58,15 @@ namespace BibliotecaLog.Migrations
                     b.Property<DateTime?>("BorrowStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("StudentEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
-                    b.Property<int?>("StudentId")
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId")
-                        .IsUnique();
+                    b.HasIndex("BookId");
 
                     b.HasIndex("StudentId");
 
@@ -135,14 +133,16 @@ namespace BibliotecaLog.Migrations
             modelBuilder.Entity("BibliotecaLog.Models.BookLoan", b =>
                 {
                     b.HasOne("BibliotecaLog.Models.BookViewModel", "Book")
-                        .WithOne("BookLoan")
-                        .HasForeignKey("BibliotecaLog.Models.BookLoan", "BookId")
+                        .WithMany("BookLoan")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BibliotecaLog.Models.StudentViewModel", "Student")
                         .WithMany("Loans")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
 

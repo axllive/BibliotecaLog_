@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotecaLog.Migrations.ApplicationDb
 {
-    public partial class initialidentity : Migration
+    public partial class InitialMigrationIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

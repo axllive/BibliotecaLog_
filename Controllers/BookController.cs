@@ -28,6 +28,7 @@ namespace BibliotecaLog.Controllers
         {
             var books = await _dbContext.Books
                 .Include(c => c.BookAuthor)
+                .Include(l => l.BookLoan)
                 .AsNoTracking()
                 .ToListAsync();                
             return View(books);
@@ -130,13 +131,13 @@ namespace BibliotecaLog.Controllers
             {
                 var delBook = await _bookRepository
                     .ConsultarUm(id);
-                if (delBook == null) return NotFound();
-                if (delBook.BookLoan != null) 
-                { 
-                    var loan = await _loanRepository.ConsultarUm((int)delBook.LoanId);
-                    loan.BorrowEnd = DateTime.Now;
-                    delBook.BookLoan = null;
-                }
+                //if (delBook == null) return NotFound();
+                //if (delBook.BookLoan != null) 
+                //{ 
+                //    var loan = await _loanRepository.ConsultarUm((int)delBook.LoanId);
+                //    loan.BorrowEnd = DateTime.Now;
+                //    delBook.BookLoan = null;
+                //}
                 await _bookRepository.Excluir(delBook);
                 return RedirectToAction(nameof(Index));
             }

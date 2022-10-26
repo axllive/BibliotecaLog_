@@ -4,6 +4,7 @@ using BibliotecaLog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaLog.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221024000549_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,21 +52,19 @@ namespace BibliotecaLog.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BorrowEnd")
+                    b.Property<DateTime?>("BorrowEnd")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("BorrowStart")
+                    b.Property<DateTime?>("BorrowStart")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("BookId")
+                        .IsUnique();
 
                     b.HasIndex("StudentId");
 
@@ -131,8 +131,8 @@ namespace BibliotecaLog.Migrations
             modelBuilder.Entity("BibliotecaLog.Models.BookLoan", b =>
                 {
                     b.HasOne("BibliotecaLog.Models.BookViewModel", "Book")
-                        .WithMany("BookLoan")
-                        .HasForeignKey("BookId")
+                        .WithOne("BookLoan")
+                        .HasForeignKey("BibliotecaLog.Models.BookLoan", "BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

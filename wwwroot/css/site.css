@@ -59,3 +59,23 @@ body {
     background-color: #d3d3b4;
     color: black;
 }
+/*datatables*/
+.page-item.active .page-link {
+    background-color: #abab90;
+    border-color: #abab90;
+}
+.page-item.active .page-link:hover {
+    border-color: white;
+}
+.page-link{
+    color: black;
+}
+.page-link:hover {
+    color: #abab90;
+}
+table.dataTable td {
+    font-size: 0.9em;
+}
+table.dataTable tr.dtrg-level-0 td {
+    font-size: 0.9em;
+}
